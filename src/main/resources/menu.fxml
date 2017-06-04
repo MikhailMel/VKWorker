@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.scratty.gui.controller.MenuController">
+   <left>
+      <VBox prefHeight="359.0" prefWidth="152.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="Боты">
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" top="5.0" />
+               </VBox.margin>
+            </Label>
+            <ListView fx:id="listView" onMouseClicked="#selectItem" prefHeight="332.0" prefWidth="138.0">
+               <VBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </VBox.margin>
+            </ListView>
+            <HBox alignment="CENTER" prefHeight="0.0" prefWidth="160.0" />
+         </children>
+      </VBox>
+   </left>
+   <bottom>
+      <HBox alignment="CENTER_LEFT" prefHeight="41.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="launch" mnemonicParsing="false" onAction="#onClickLaunch" text="Старт" visible="false">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="edit" mnemonicParsing="false" onAction="#onClickEdit" text="Изменить" visible="false">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="del" mnemonicParsing="false" onAction="#onClickDel" text="Удалить" visible="false">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#onClickStartAll" text="Запустить всех">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin></Button>
+            <Button layoutX="162.0" layoutY="17.0" mnemonicParsing="false" onAction="#onClickStopAll" text="Остановить всех">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button layoutX="266.0" layoutY="17.0" mnemonicParsing="false" onAction="#onClickCreate" text="Создать бота">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </bottom>
+   <center>
+      <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>
