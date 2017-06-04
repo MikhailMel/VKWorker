@@ -1,7 +1,7 @@
-package ru.scratty.vk;
+package ru.scratty.action.util;
 
 import com.vk.api.sdk.client.actors.UserActor;
-import ru.scratty.vk.common.VkApi;
+import ru.scratty.action.common.VkApi;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package ru.scratty.vk.common;
+package ru.scratty.action.common;
 
 import com.vk.api.sdk.client.TransportClient;
 import com.vk.api.sdk.client.VkApiClient;

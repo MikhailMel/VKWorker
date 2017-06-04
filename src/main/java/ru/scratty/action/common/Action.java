@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author scratty
  */
 
-public abstract class Action {
+public abstract class Action extends VkApi {
 
     protected static final long TIME_HALF_HOUR = 1800000;
 
@@ -22,15 +22,13 @@ public abstract class Action {
 
     protected static final long TIME_DAY = 864000000;
 
-    protected UserActor userActor;
-
     protected Config config;
 
     protected OnActionListener listener;
 
     protected Action(Config config, UserActor userActor, OnActionListener listener) {
+        super(userActor);
         this.config = config;
-        this.userActor = userActor;
         this.listener = listener;
     }
 
