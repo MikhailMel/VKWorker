@@ -19,4 +19,9 @@ public class VkGroup extends VkApi {
     public ArrayList<String> getListGroups() {
         return null;
     }
+
+    public int getRandomGroupId() {
+
+        return 0;
+    }
 }
