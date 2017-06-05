@@ -17,7 +17,6 @@ public class VkGroup extends VkApi {
     }
 
     public ArrayList<String> getListGroups() {
-
         return null;
     }
 }
