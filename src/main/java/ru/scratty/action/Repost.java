@@ -13,7 +13,7 @@ import ru.scratty.util.Config;
 public class Repost extends Action {
 
     public Repost(Config config, UserActor userActor, OnActionListener listener) {
-        super(config, userActor, listener);
+        super(Config.TypeAction.REPOST, config, userActor, listener);
     }
 
     @Override
@@ -22,12 +22,7 @@ public class Repost extends Action {
     }
 
     @Override
-    protected void setDelay() {
-
-    }
-
-    @Override
-    protected void sendMsg(String msg) {
-
+    protected long getDelay() {
+        return 0;
     }
 }

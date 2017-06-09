@@ -12,6 +12,10 @@ import com.vk.api.sdk.httpclient.HttpTransportClient;
  */
 public abstract class VkApi {
 
+    public static final int INT_ERR = -1;
+
+    public static final String STRING_ERR = "err";
+
     protected VkApiClient vk;
 
     protected UserActor userActor;
@@ -22,6 +26,4 @@ public abstract class VkApi {
         TransportClient transportClient = HttpTransportClient.getInstance();
         vk = new VkApiClient(transportClient);
     }
-
-
 }
