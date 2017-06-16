@@ -29,13 +29,14 @@ public class LeaveFromGroup extends Action {
                 int id = list.get(new Random().nextInt(list.size()));
 
                 vk.groups().leave(userActor, id).execute();
-                sendMsg("Выход из группы " + VkGroup.getInstance(userActor).getGroupName(id) + " (" + id + ")");
+                sendMsg("Выход из группы " + new VkGroup(userActor).getGroupName(id) + " (" + id + ")");
             } else {
                 sendMsg("Кол-во групп меньше " + MIN_COUNT_GROUPS);
             }
         } catch (ApiException | ClientException e) {
             sendMsg("Ошибка выхода из группы");
             sendMsg(e.getMessage());
+            e.printStackTrace();
         }
     }
 

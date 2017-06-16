@@ -16,7 +16,7 @@ public class JoinInGroup extends Action {
 
     @Override
     protected void doAction() {
-        VkGroup vkGroup = VkGroup.getInstance(userActor);
+        VkGroup vkGroup = new VkGroup(userActor);
         int groupId = INT_ERR;
 
         try {
@@ -30,6 +30,7 @@ public class JoinInGroup extends Action {
         } catch (ClientException | ApiException e) {
             sendMsg("Ошибка вступления в группу " + groupId);
             sendMsg(e.getMessage());
+            e.printStackTrace();
         }
     }
 

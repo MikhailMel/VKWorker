@@ -19,29 +19,15 @@ import java.util.Random;
 
 public class VkGroup extends VkApi {
 
-    private static volatile VkGroup instance;
-
-    private VkGroup(UserActor userActor) {
+    public VkGroup(UserActor userActor) {
         super(userActor);
-    }
-
-    public static synchronized VkGroup getInstance(UserActor userActor) {
-        VkGroup vkGroup = instance;
-        if (vkGroup == null) {
-            synchronized (VkGroup.class) {
-                vkGroup = instance;
-                if (vkGroup == null) {
-                    instance = vkGroup = new VkGroup(userActor);
-                }
-            }
-        }
-        return vkGroup;
     }
 
     /**
      * Получение id рандомного участника группы
      */
-    public synchronized int getRandomUserFromGroup(String groupId) throws ClientException, ApiException {
+    public int getRandomUserFromGroup(String groupId) throws ClientException, ApiException {
+        sleep();
         int count = getCountUsersInGroup(groupId);
         if (count > 0) {
             int offset = new Random().nextInt(count);
@@ -63,7 +49,8 @@ public class VkGroup extends VkApi {
     /**
      * Получение кол-ва участников группы
      */
-    public synchronized int getCountUsersInGroup(String groupId) throws ClientException, ApiException {
+    public int getCountUsersInGroup(String groupId) throws ClientException, ApiException {
+        sleep();
         List<GroupFull> list = vk.groups()
                 .getById(userActor)
                 .groupId(groupId)
@@ -79,7 +66,8 @@ public class VkGroup extends VkApi {
     /**
      * Получение рандомной группы из стартового аккаунта из конфига
      */
-    public synchronized int getRandomGroupFromUserFromConfig() throws ClientException, ApiException {
+    public int getRandomGroupFromUserFromConfig() throws ClientException, ApiException {
+        sleep();
         com.vk.api.sdk.objects.groups.responses.GetResponse response = vk.groups()
                 .get(userActor)
                 .userId(Integer.valueOf(GlobalConfig.getInstance().getField(GlobalConfig.Field.START_USER)))
@@ -94,28 +82,39 @@ public class VkGroup extends VkApi {
     /**
      * Получение рандомной группы от рандомного пользователя
      */
-    public synchronized int getRandomGroupFromRandomUser() throws ClientException, ApiException {
+    public int getRandomGroupFromRandomUser() throws ClientException, ApiException {
         int groupId = getRandomGroupFromUserFromConfig();
         if (groupId != -1) {
             int userId = getRandomUserFromGroup(String.valueOf(groupId));
-            if (userId != -1) {
-                com.vk.api.sdk.objects.groups.responses.GetResponse response = vk.groups().
-                        get(userActor).
-                        userId(userId)
-                        .execute();
+            return getRandomGroup(userId);
+        }
+        return INT_ERR;
+    }
 
-                if (response.getCount() > 0) {
-                    return response.getItems().get(new Random().nextInt(response.getCount()));
-                }
+    /**
+     * Получение рандомной группы пользователя
+     */
+    public int getRandomGroup(int userId) throws ClientException, ApiException {
+        sleep();
+        if (userId != -1) {
+            com.vk.api.sdk.objects.groups.responses.GetResponse response = vk.groups().
+                    get(userActor).
+                    userId(userId)
+                    .execute();
+
+            if (response.getCount() > 0) {
+                return response.getItems().get(new Random().nextInt(response.getCount()));
             }
         }
+
         return INT_ERR;
     }
 
     /**
      * Получение имени группы
      */
-    public synchronized String getGroupName(int groupId) throws ClientException, ApiException {
+    public String getGroupName(int groupId) throws ClientException, ApiException {
+        sleep();
         List<GroupFull> list = vk.groups()
                 .getById(userActor)
                 .groupId(String.valueOf(groupId))
@@ -128,4 +127,20 @@ public class VkGroup extends VkApi {
         return STRING_ERR;
     }
 
+    /**
+     * Получение кол-ва записей сообщества
+     */
+    public int getCountTopics(int groupId) throws ClientException, ApiException {
+        sleep();
+        List<GroupFull> list = vk.groups()
+                .getById(userActor)
+                .groupId(String.valueOf(groupId))
+                .fields(GroupField.COUNTERS)
+                .execute();
+
+        if (list != null && list.size() > 0 && list.get(0).getCounters().getTopics() != null) {
+            return list.get(0).getCounters().getTopics();
+        }
+        return INT_ERR;
+    }
 }

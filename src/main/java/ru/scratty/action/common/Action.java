@@ -15,6 +15,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Action extends VkApi {
 
+    protected static final long TIME_MINUTE = 60000;
+
     protected static final long TIME_HALF_HOUR = 1800000;
 
     protected static final long TIME_HOUR = 3600000;
@@ -54,7 +56,7 @@ public abstract class Action extends VkApi {
             setDelay(getDelay());
 //            setDelay(10000);
         }
-        sleep(1000);
+        sleep();
     }
 
     /**
@@ -80,13 +82,5 @@ public abstract class Action extends VkApi {
      */
     protected void sendMsg(String msg) {
         listener.sendAction(typeAction.name(), msg);
-    }
-
-    protected void sleep(int count) {
-        try {
-            Thread.sleep(count);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
