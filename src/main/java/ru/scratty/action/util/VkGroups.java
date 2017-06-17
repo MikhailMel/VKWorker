@@ -17,9 +17,9 @@ import java.util.Random;
  * @author scratty
  */
 
-public class VkGroup extends VkApi {
+public class VkGroups extends VkApi {
 
-    public VkGroup(UserActor userActor) {
+    public VkGroups(UserActor userActor) {
         super(userActor);
     }
 
@@ -117,7 +117,7 @@ public class VkGroup extends VkApi {
         sleep();
         List<GroupFull> list = vk.groups()
                 .getById(userActor)
-                .groupId(String.valueOf(groupId))
+                .groupId(String.valueOf(Math.abs(groupId)))
                 .execute();
 
         if (list != null && list.size() > 0) {
@@ -125,22 +125,5 @@ public class VkGroup extends VkApi {
         }
 
         return STRING_ERR;
-    }
-
-    /**
-     * Получение кол-ва записей сообщества
-     */
-    public int getCountTopics(int groupId) throws ClientException, ApiException {
-        sleep();
-        List<GroupFull> list = vk.groups()
-                .getById(userActor)
-                .groupId(String.valueOf(groupId))
-                .fields(GroupField.COUNTERS)
-                .execute();
-
-        if (list != null && list.size() > 0 && list.get(0).getCounters().getTopics() != null) {
-            return list.get(0).getCounters().getTopics();
-        }
-        return INT_ERR;
     }
 }

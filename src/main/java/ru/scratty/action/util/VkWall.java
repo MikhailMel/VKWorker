@@ -10,33 +10,46 @@ import java.util.Random;
 
 public class VkWall extends VkApi {
 
-    private static final int RANDOM_RANGE_FOR_TOPICS = 100;
+    private static final int DEFAULT_COUNT_POSTS = 20;
 
     public VkWall(UserActor userActor) {
         super(userActor);
     }
 
-    public String getRandomTopic(int groupId) throws ClientException, ApiException {
-        sleep();
-        int count = new VkGroup(userActor).getCountTopics(groupId);
+    /**
+     * Получить DEFAULT_COUNT_POSTS постов
+     */
+    public GetResponse getPost(int id) throws ClientException, ApiException {
+        return vk.wall()
+                .get(userActor)
+                .ownerId(id)
+                .count(DEFAULT_COUNT_POSTS)
+                .execute();
+    }
 
-        if (groupId != INT_ERR && count != INT_ERR) {
-            int i;
-            while ((i = new Random().nextInt(RANDOM_RANGE_FOR_TOPICS)) < count) {
-            }
-
-            GetResponse response = vk.wall()
-                    .get(userActor)
-                    .ownerId(-groupId)
-                    .count(1)
-                    .offset(i)
-                    .execute();
-
-            if (response.getCount() > 0) {
-                return String.format("wall%d_%d", response.getItems().get(0).getOwnerId(), response.getItems().get(0).getId());
-            }
+    /**
+     * Получить рандомный пост в виде wall-<id_group>_<id_post>
+     */
+    public String getRandomPost(int id) throws ClientException, ApiException {
+        int topicId = getRandomPostId(id);
+        if (topicId != -1) {
+            return String.format("wall%d_%d", id, topicId);
         }
         return STRING_ERR;
     }
 
+    /**
+     * Получить id рандомного поста
+     */
+    public int getRandomPostId(int id) throws ClientException, ApiException {
+        sleep();
+        if (id != INT_ERR) {
+            GetResponse response = getPost(id);
+
+            if (response.getCount() > 0 && response.getItems().size() == DEFAULT_COUNT_POSTS) {
+                return response.getItems().get(new Random().nextInt(DEFAULT_COUNT_POSTS)).getId();
+            }
+        }
+        return INT_ERR;
+    }
 }

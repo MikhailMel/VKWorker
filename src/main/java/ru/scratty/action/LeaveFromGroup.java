@@ -6,7 +6,7 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.groups.responses.GetResponse;
 import ru.scratty.action.common.Action;
 import ru.scratty.action.listener.OnActionListener;
-import ru.scratty.action.util.VkGroup;
+import ru.scratty.action.util.VkGroups;
 import ru.scratty.util.Config;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class LeaveFromGroup extends Action {
                 int id = list.get(new Random().nextInt(list.size()));
 
                 vk.groups().leave(userActor, id).execute();
-                sendMsg("Выход из группы " + new VkGroup(userActor).getGroupName(id) + " (" + id + ")");
+                sendMsg("Выход из группы " + new VkGroups(userActor).getGroupName(id) + " (" + id + ")");
             } else {
                 sendMsg("Кол-во групп меньше " + MIN_COUNT_GROUPS);
             }

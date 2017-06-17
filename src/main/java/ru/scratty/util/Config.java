@@ -54,6 +54,6 @@ public class Config extends FileWorker {
     }
 
     public enum TypeAction {
-        REPOST, JOIN, LEAVE
+        REPOST, JOIN, LEAVE, LIKE
     }
 }

@@ -5,7 +5,7 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import ru.scratty.action.common.Action;
 import ru.scratty.action.listener.OnActionListener;
-import ru.scratty.action.util.VkGroup;
+import ru.scratty.action.util.VkGroups;
 import ru.scratty.util.Config;
 
 public class JoinInGroup extends Action {
@@ -16,14 +16,14 @@ public class JoinInGroup extends Action {
 
     @Override
     protected void doAction() {
-        VkGroup vkGroup = new VkGroup(userActor);
+        VkGroups vkGroups = new VkGroups(userActor);
         int groupId = INT_ERR;
 
         try {
-            groupId = vkGroup.getRandomGroupFromRandomUser();
+            groupId = vkGroups.getRandomGroupFromRandomUser();
             if (groupId != INT_ERR) {
                 vk.groups().join(userActor).groupId(groupId).execute();
-                sendMsg("Вступление в группу " + vkGroup.getGroupName(groupId) + " (" + groupId + ") успешно");
+                sendMsg("Вступление в группу " + vkGroups.getGroupName(groupId) + " (" + groupId + ") успешно");
             } else {
                 sendMsg("Список групп пуст");
             }

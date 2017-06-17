@@ -6,7 +6,7 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.wall.responses.RepostResponse;
 import ru.scratty.action.common.Action;
 import ru.scratty.action.listener.OnActionListener;
-import ru.scratty.action.util.VkGroup;
+import ru.scratty.action.util.VkGroups;
 import ru.scratty.action.util.VkWall;
 import ru.scratty.util.Config;
 
@@ -23,19 +23,17 @@ public class Repost extends Action {
 
     @Override
     protected void doAction() {
-        VkGroup vkGroup = new VkGroup(userActor);
+        VkGroups vkGroups = new VkGroups(userActor);
         try {
-            int groupId = vkGroup.getRandomGroup(userActor.getId());
-            System.out.println("GI " + groupId);
-            String topicId = new VkWall(userActor).getRandomTopic(groupId);
-            System.out.println("TI " + topicId);
+            int id = vkGroups.getRandomGroup(userActor.getId());
+            String topicId = new VkWall(userActor).getRandomPost(-id);
             if (!topicId.equals(STRING_ERR)) {
                 RepostResponse response = vk.wall()
                         .repost(userActor, topicId)
                         .execute();
 
                 if (response.getSuccess().getValue() == 1) {
-                    sendMsg("Успешный репост" + topicId + " из группы " + vkGroup.getGroupName(groupId));
+                    sendMsg("Успешный репост" + topicId + " из группы " + vkGroups.getGroupName(id));
                 } else {
                     sendMsg("Репост " + topicId + " не выполнен");
                 }

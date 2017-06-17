@@ -10,6 +10,7 @@ import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.account.UserSettings;
 import ru.scratty.action.JoinInGroup;
 import ru.scratty.action.LeaveFromGroup;
+import ru.scratty.action.Like;
 import ru.scratty.action.Repost;
 import ru.scratty.action.common.Action;
 import ru.scratty.action.listener.OnActionListener;
@@ -109,6 +110,7 @@ public class Bot extends Thread implements OnActionListener {
         actions.add(new JoinInGroup(config, userActor, this));
         actions.add(new LeaveFromGroup(config, userActor, this));
         actions.add(new Repost(config, userActor, this));
+        actions.add(new Like(config, userActor, this));
     }
 
     private void sendMsg(String msg) {
