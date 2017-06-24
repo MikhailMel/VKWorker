@@ -5,7 +5,7 @@ package ru.scratty.util;
  * @author scratty
  */
 
-public class Config extends FileWorker {
+public class Config extends ConfigFileWorker {
 
     private static final String FILE_TEMPLATE = "bots/%s_config.bot";
 
@@ -54,6 +54,6 @@ public class Config extends FileWorker {
     }
 
     public enum TypeAction {
-        REPOST, JOIN, LEAVE, LIKE
+        REPOST, JOIN, LEAVE, LIKE, SET_AVATAR
     }
 }

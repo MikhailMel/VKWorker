@@ -9,13 +9,13 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class FileWorker {
+public class ConfigFileWorker {
 
     private String path;
 
     private Map<String, String> map = new HashMap<>();
 
-    FileWorker(String path) {
+    ConfigFileWorker(String path) {
         this.path = path;
         if (checkExists(path)) {
             init();
@@ -92,7 +92,7 @@ public abstract class FileWorker {
     /**
      * Получение резмера
      */
-    protected int getCount() {
+    int getCount() {
         return map.size();
     }
 }

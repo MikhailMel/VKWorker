@@ -5,7 +5,7 @@ package ru.scratty.util;
  * @author scratty
  */
 
-public class GlobalConfig extends FileWorker {
+public class GlobalConfig extends ConfigFileWorker {
 
     private static final String START_USER = "119576462";
 

@@ -8,10 +8,7 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.account.UserSettings;
-import ru.scratty.action.JoinInGroup;
-import ru.scratty.action.LeaveFromGroup;
-import ru.scratty.action.Like;
-import ru.scratty.action.Repost;
+import ru.scratty.action.*;
 import ru.scratty.action.common.Action;
 import ru.scratty.action.listener.OnActionListener;
 import ru.scratty.action.listener.OnMsgListener;
@@ -78,7 +75,6 @@ public class Bot extends Thread implements OnActionListener {
     @Override
     public void run() {
         auth();
-
         while(flag) {
             for (Action action : actions) {
                 action.check();
@@ -111,6 +107,7 @@ public class Bot extends Thread implements OnActionListener {
         actions.add(new LeaveFromGroup(config, userActor, this));
         actions.add(new Repost(config, userActor, this));
         actions.add(new Like(config, userActor, this));
+        actions.add(new SetAvatar(config, userActor, this, name));
     }
 
     private void sendMsg(String msg) {

@@ -30,7 +30,6 @@ public class Like extends Action {
     protected void doAction() {
         try {
             int id = getId();
-            System.out.println("ID " + id);
             if (id != -1) {
                 int post = new VkWall(userActor).getRandomPostId(id);
                 if (post != -1) {
@@ -54,7 +53,7 @@ public class Like extends Action {
 
     @Override
     protected long getDelay() {
-        return 0;
+        return getNextDate(TIME_MINUTE, TIME_HOUR * 8);
     }
 
     /**
@@ -77,7 +76,6 @@ public class Like extends Action {
         VkGroups vkGroups = new VkGroups(userActor);
         VkFriends vkFriends = new VkFriends(userActor);
         int i = new Random().nextInt(100);
-        System.out.println("I " + i);
         if (i < CHANCE_RANDOM_USER) {
             return vkGroups.getRandomUserFromGroup(String.valueOf(vkGroups.getRandomGroupFromUserFromConfig()));
         } else if (i < CHANCE_MY_GROUPS) {
