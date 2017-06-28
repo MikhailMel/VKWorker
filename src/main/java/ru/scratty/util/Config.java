@@ -54,6 +54,6 @@ public class Config extends ConfigFileWorker {
     }
 
     public enum TypeAction {
-        REPOST, JOIN, LEAVE, LIKE, SET_AVATAR
+        REPOST, JOIN, LEAVE, LIKE, SET_AVATAR, ADD_FRIEND
     }
 }

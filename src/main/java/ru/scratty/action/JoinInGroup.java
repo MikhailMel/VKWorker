@@ -8,6 +8,8 @@ import ru.scratty.action.listener.OnActionListener;
 import ru.scratty.action.util.VkGroups;
 import ru.scratty.util.Config;
 
+import static ru.scratty.action.common.VkApi.INT_ERR;
+
 public class JoinInGroup extends Action {
 
     public JoinInGroup(Config config, UserActor userActor, OnActionListener listener) {
@@ -22,8 +24,11 @@ public class JoinInGroup extends Action {
         try {
             groupId = vkGroups.getRandomGroupFromRandomUser();
             if (groupId != INT_ERR) {
-                vk.groups().join(userActor).groupId(groupId).execute();
-                sendMsg("Вступление в группу " + vkGroups.getGroupName(groupId) + " (" + groupId + ") успешно");
+                if (vkGroups.joinInGroup(groupId)) {
+                    sendMsg("Вступление в группу " + vkGroups.getGroupName(groupId) + " (" + groupId + ") успешно");
+                } else {
+                    sendMsg("Ошибка вступления в группу " + groupId);
+                }
             } else {
                 sendMsg("Список групп пуст");
             }

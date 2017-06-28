@@ -18,6 +18,7 @@ public class VkUsers extends VkApi {
      * Получить имя пользователя
      */
     public String getName(int id) throws ClientException, ApiException {
+        sleep();
         List<UserXtrCounters> list = vk.users()
                 .get(userActor)
                 .userIds(String.valueOf(id))

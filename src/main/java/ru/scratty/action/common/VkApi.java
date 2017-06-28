@@ -16,7 +16,7 @@ public class VkApi {
 
     public static final String STRING_ERR = "err";
 
-    public static final long DEFAULT_SLEEP = 334L;
+    private static final long DEFAULT_SLEEP = 334L;
 
     protected VkApiClient vk;
 
@@ -29,7 +29,7 @@ public class VkApi {
         vk = new VkApiClient(transportClient);
     }
 
-    public void sleep() {
+    protected void sleep() {
         try {
             Thread.sleep(DEFAULT_SLEEP);
         } catch (InterruptedException e) {

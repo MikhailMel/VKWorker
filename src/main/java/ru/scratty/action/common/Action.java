@@ -2,6 +2,9 @@ package ru.scratty.action.common;
 
 import com.vk.api.sdk.client.actors.UserActor;
 import ru.scratty.action.listener.OnActionListener;
+import ru.scratty.captcha.Captcha;
+import ru.scratty.captcha.CaptchaDialog;
+import ru.scratty.captcha.CaptchaListener;
 import ru.scratty.util.Config;
 
 import java.text.SimpleDateFormat;
@@ -13,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author scratty
  */
 
-public abstract class Action extends VkApi {
+public abstract class Action {
 
     protected static final long TIME_MINUTE = 60000;
 
@@ -25,18 +28,22 @@ public abstract class Action extends VkApi {
 
     protected static final long TIME_DAY = 86400000;
 
+    protected UserActor userActor;
+
     private Config config;
 
-    private OnActionListener listener;
+    protected OnActionListener listener;
 
     private Config.TypeAction typeAction;
+
+    private boolean captchaFlag;
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
 
     protected Action(Config.TypeAction typeAction, Config config, UserActor userActor, OnActionListener listener) {
-        super(userActor);
         this.typeAction = typeAction;
         this.config = config;
+        this.userActor = userActor;
         this.listener = listener;
     }
 
@@ -51,12 +58,11 @@ public abstract class Action extends VkApi {
      * Проверка наступления нужного момента для совершения действия
      */
     public void check() {
-        if(config.getLong(typeAction) <= new Date().getTime()) {
+        if(config.getLong(typeAction) <= new Date().getTime() && !captchaFlag) {
             doAction();
             setDelay(getDelay());
 //            setDelay(10000);
         }
-        sleep();
     }
 
     /**
@@ -75,6 +81,23 @@ public abstract class Action extends VkApi {
     private void setDelay(long date) {
         config.setLong(typeAction, date);
         sendMsg("Следующее действие будет " + sdf.format(new Date(date)));
+    }
+
+    protected void showCaptcha(Captcha captcha, CaptchaListener listener) {
+        sendMsg("Требуется ввод капчи");
+        captchaFlag = true;
+
+        CaptchaDialog dialog = new CaptchaDialog(captcha);
+        if (dialog.init()) {
+            dialog.setCaptchaListener(c -> {
+                sendMsg("Капча " + c.getText());
+                listener.sendCaptcha(c);
+                captchaFlag = false;
+            });
+            dialog.show();
+        } else {
+            captchaFlag = false;
+        }
     }
 
     /**

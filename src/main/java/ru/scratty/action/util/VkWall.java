@@ -4,7 +4,9 @@ import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.wall.responses.GetResponse;
+import com.vk.api.sdk.objects.wall.responses.RepostResponse;
 import ru.scratty.action.common.VkApi;
+import ru.scratty.captcha.Captcha;
 
 import java.util.Random;
 
@@ -20,6 +22,7 @@ public class VkWall extends VkApi {
      * Получить DEFAULT_COUNT_POSTS постов
      */
     public GetResponse getPost(int id) throws ClientException, ApiException {
+        sleep();
         return vk.wall()
                 .get(userActor)
                 .ownerId(id)
@@ -42,7 +45,6 @@ public class VkWall extends VkApi {
      * Получить id рандомного поста
      */
     public int getRandomPostId(int id) throws ClientException, ApiException {
-        sleep();
         if (id != INT_ERR) {
             GetResponse response = getPost(id);
 
@@ -51,5 +53,35 @@ public class VkWall extends VkApi {
             }
         }
         return INT_ERR;
+    }
+
+    /**
+     * Репост записи
+     */
+    public boolean repost(String topicId) throws ClientException, ApiException {
+        sleep();
+        RepostResponse response = vk.wall()
+                .repost(userActor, topicId)
+                .execute();
+
+        return response != null && response.getSuccess().getValue() == 1;
+    }
+
+    /**
+     * Репост записи (c капчей)
+     */
+    public boolean repostWithCaptcha(String topicId, Captcha captcha) {
+        sleep();
+        try {
+            RepostResponse response = vk.wall()
+                    .repost(userActor, topicId)
+                    .captchaSid(captcha.getSid())
+                    .captchaKey(captcha.getText())
+                    .execute();
+            return response != null && response.getSuccess().getValue() == 1;
+        } catch (ApiException | ClientException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

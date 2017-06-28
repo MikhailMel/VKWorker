@@ -79,16 +79,20 @@ public class Bot extends Thread implements OnActionListener {
             for (Action action : actions) {
                 action.check();
             }
+
         }
     }
 
     private void auth() {
         userActor = new UserActor(userId, token);
         try {
-            UserSettings userSettings = vk.account().getProfileInfo(userActor).execute();
+            UserSettings userSettings = vk.account()
+                    .getProfileInfo(userActor)
+                    .execute();
+
             if (userSettings != null) {
                 initActions();
-                sendMsg("успешная авторизация под именем " + userSettings.getFirstName() + " " + userSettings.getLastName());
+                sendMsg("Успешная авторизация под именем " + userSettings.getFirstName() + " " + userSettings.getLastName());
 
                 flag = true;
                 changeState();
@@ -108,6 +112,7 @@ public class Bot extends Thread implements OnActionListener {
         actions.add(new Repost(config, userActor, this));
         actions.add(new Like(config, userActor, this));
         actions.add(new SetAvatar(config, userActor, this, name));
+        actions.add(new AddFriend(config, userActor, this));
     }
 
     private void sendMsg(String msg) {

@@ -3,14 +3,12 @@ package ru.scratty.action;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
-import com.vk.api.sdk.objects.groups.responses.GetResponse;
 import ru.scratty.action.common.Action;
 import ru.scratty.action.listener.OnActionListener;
 import ru.scratty.action.util.VkGroups;
 import ru.scratty.util.Config;
 
-import java.util.List;
-import java.util.Random;
+import static ru.scratty.action.common.VkApi.INT_ERR;
 
 public class LeaveFromGroup extends Action {
 
@@ -22,19 +20,21 @@ public class LeaveFromGroup extends Action {
 
     @Override
     protected void doAction() {
+        VkGroups vkGroups = new VkGroups(userActor);
+        int groupId = INT_ERR;
         try {
-            GetResponse getResponse = vk.groups().get(userActor).execute();
-            if (getResponse.getCount() > MIN_COUNT_GROUPS) {
-                List<Integer> list = getResponse.getItems();
-                int id = list.get(new Random().nextInt(list.size()));
-
-                vk.groups().leave(userActor, id).execute();
-                sendMsg("Выход из группы " + new VkGroups(userActor).getGroupName(id) + " (" + id + ")");
+            groupId = vkGroups.getRandomGroup(userActor.getId());
+            if (groupId != INT_ERR) {
+                if (vkGroups.leaveFromGroup(groupId)) {
+                    sendMsg("Выход из группы " + vkGroups.getGroupName(groupId) + " (" + groupId + ")");
+                } else {
+                    sendMsg("Ошибка выхода из группы " + groupId);
+                }
             } else {
                 sendMsg("Кол-во групп меньше " + MIN_COUNT_GROUPS);
             }
         } catch (ApiException | ClientException e) {
-            sendMsg("Ошибка выхода из группы");
+            sendMsg("Ошибка выхода из группы " + groupId);
             sendMsg(e.getMessage());
             e.printStackTrace();
         }

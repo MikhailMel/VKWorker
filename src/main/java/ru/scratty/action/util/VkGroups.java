@@ -3,6 +3,7 @@ package ru.scratty.action.util;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
+import com.vk.api.sdk.objects.base.responses.OkResponse;
 import com.vk.api.sdk.objects.groups.GroupFull;
 import com.vk.api.sdk.objects.groups.responses.GetMembersResponse;
 import com.vk.api.sdk.queries.groups.GroupField;
@@ -27,8 +28,8 @@ public class VkGroups extends VkApi {
      * Получение id рандомного участника группы
      */
     public int getRandomUserFromGroup(String groupId) throws ClientException, ApiException {
-        sleep();
         int count = getCountUsersInGroup(groupId);
+        sleep();
         if (count > 0) {
             int offset = new Random().nextInt(count);
 
@@ -126,4 +127,30 @@ public class VkGroups extends VkApi {
 
         return STRING_ERR;
     }
+
+    /**
+     * Вступление в группу
+     */
+    public boolean joinInGroup(int groupId) throws ClientException, ApiException {
+        sleep();
+        OkResponse response = vk.groups()
+                .join(userActor)
+                .groupId(groupId)
+                .execute();
+
+        return response != null && response.getValue() == 1;
+    }
+
+    /**
+     * Выход из группы
+     */
+    public boolean leaveFromGroup(int groupId) throws ClientException, ApiException {
+        sleep();
+        OkResponse response = vk.groups()
+                .leave(userActor, groupId)
+                .execute();
+
+        return response != null && response.getValue() == 1;
+    }
+
 }

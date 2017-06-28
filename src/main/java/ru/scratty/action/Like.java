@@ -6,10 +6,7 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.queries.likes.LikesType;
 import ru.scratty.action.common.Action;
 import ru.scratty.action.listener.OnActionListener;
-import ru.scratty.action.util.VkFriends;
-import ru.scratty.action.util.VkGroups;
-import ru.scratty.action.util.VkUsers;
-import ru.scratty.action.util.VkWall;
+import ru.scratty.action.util.*;
 import ru.scratty.util.Config;
 
 import java.util.Random;
@@ -33,12 +30,11 @@ public class Like extends Action {
             if (id != -1) {
                 int post = new VkWall(userActor).getRandomPostId(id);
                 if (post != -1) {
-                    vk.likes()
-                            .add(userActor, LikesType.POST, post)
-                            .ownerId(id)
-                            .execute();
-
-                    sendSuccessLikeMsg(id, post);
+                    if (new VkLikes(userActor).addLike(LikesType.POST, id, post)) {
+                        sendSuccessLikeMsg(id, post);
+                    } else {
+                        sendMsg("Ошибка добавления лайка");
+                    }
                 } else {
                     sendMsg("Ошибка получения id записи");
                 }
