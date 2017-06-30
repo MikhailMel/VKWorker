@@ -170,14 +170,16 @@ public class MenuController implements OnMsgListener, OnStateBotListener, Initia
      */
     @FXML
     void selectItem() {
-        if(listView.getFocusModel().getFocusedItem().isWorked()) {
-            launch.setText("Стоп");
-        } else {
-            launch.setText("Старт");
+        if (listView.getFocusModel().getFocusedItem() != null) {
+            if (listView.getFocusModel().getFocusedItem().isWorked()) {
+                launch.setText("Стоп");
+            } else {
+                launch.setText("Старт");
+            }
+            launch.setVisible(true);
+            edit.setVisible(true);
+            del.setVisible(true);
         }
-        launch.setVisible(true);
-        edit.setVisible(true);
-        del.setVisible(true);
     }
 
     /**

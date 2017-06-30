@@ -8,7 +8,7 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.account.UserSettings;
-import ru.scratty.action.Repost;
+import ru.scratty.action.*;
 import ru.scratty.action.common.Action;
 import ru.scratty.action.listener.OnActionListener;
 import ru.scratty.action.listener.OnMsgListener;
@@ -75,26 +75,24 @@ public class Bot extends Thread implements OnActionListener {
     @Override
     public void run() {
         auth();
-
         while(flag) {
             for (Action action : actions) {
                 action.check();
             }
-            try {
-                Thread.sleep(5000);
-            } catch(InterruptedException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 
     private void auth() {
         userActor = new UserActor(userId, token);
         try {
-            UserSettings userSettings = vk.account().getProfileInfo(userActor).execute();
+            UserSettings userSettings = vk.account()
+                    .getProfileInfo(userActor)
+                    .execute();
+
             if (userSettings != null) {
                 initActions();
-                sendMsg("успешная авторизация под именем " + userSettings.getFirstName() + " " + userSettings.getLastName());
+                sendMsg("Успешная авторизация под именем " + userSettings.getFirstName() + " " + userSettings.getLastName());
 
                 flag = true;
                 changeState();
@@ -109,13 +107,23 @@ public class Bot extends Thread implements OnActionListener {
      * Инициализация всех возможных действий аккаунтом
      */
     private void initActions() {
+        actions.add(new JoinInGroup(config, userActor, this));
+        actions.add(new LeaveFromGroup(config, userActor, this));
         actions.add(new Repost(config, userActor, this));
+        actions.add(new Like(config, userActor, this));
+        actions.add(new SetAvatar(config, userActor, this, name));
+        actions.add(new AddFriend(config, userActor, this));
     }
 
     private void sendMsg(String msg) {
         if(onMsgListener != null) {
             onMsgListener.sendMsg(name, msg);
         }
+    }
+
+    @Override
+    public void sendAction(String action, String msg) {
+        sendMsg("<" + action + "> " + msg);
     }
 
     private void changeState() {
