@@ -42,9 +42,4 @@ public class SetAvatar extends Action {
             sendMsg("Аватаров не найдено");
         }
     }
-
-    @Override
-    protected long getDelay() {
-        return getNextDate(TIME_DAY * 5, TIME_DAY * 60);
-    }
 }

@@ -6,7 +6,7 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.friends.responses.AddResponse;
 import com.vk.api.sdk.objects.friends.responses.GetResponse;
 import ru.scratty.action.common.VkApi;
-import ru.scratty.captcha.Captcha;
+import ru.scratty.dialog.captcha.Captcha;
 
 import java.util.Random;
 

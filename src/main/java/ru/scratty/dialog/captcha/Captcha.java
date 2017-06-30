@@ -1,4 +1,4 @@
-package ru.scratty.captcha;
+package ru.scratty.dialog.captcha;
 
 import com.vk.api.sdk.exceptions.ApiCaptchaException;
 

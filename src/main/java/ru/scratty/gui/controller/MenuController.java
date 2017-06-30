@@ -11,6 +11,7 @@ import ru.scratty.action.listener.OnMsgListener;
 import ru.scratty.action.listener.OnStateBotListener;
 import ru.scratty.bot.Bot;
 import ru.scratty.bot.BotFather;
+import ru.scratty.dialog.ThresholdsDialog;
 import ru.scratty.util.ListBots;
 
 import java.net.URL;
@@ -47,8 +48,6 @@ public class MenuController implements OnMsgListener, OnStateBotListener, Initia
 
     /**
      * Инициализируем данные при загрузке
-     * @param location
-     * @param resources
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -122,6 +121,7 @@ public class MenuController implements OnMsgListener, OnStateBotListener, Initia
         dialog.getDialogPane().setContent(grid);
         dialog.setResultConverter(param -> {
             if(param == button) {
+
                 return new Bot(name.getText(), Integer.parseInt(id.getText()), token.getText());
             }
             return null;
@@ -135,6 +135,11 @@ public class MenuController implements OnMsgListener, OnStateBotListener, Initia
                 botFather.editBot(bot, res);
             }
         });
+    }
+
+    @FXML
+    void setThresholds() {
+        new ThresholdsDialog(listView.getFocusModel().getFocusedItem());
     }
 
     /**

@@ -1,4 +1,4 @@
-package ru.scratty.captcha;
+package ru.scratty.dialog.captcha;
 
 import javafx.application.Platform;
 import javafx.concurrent.Task;

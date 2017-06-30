@@ -39,9 +39,4 @@ public class LeaveFromGroup extends Action {
             e.printStackTrace();
         }
     }
-
-    @Override
-    protected long getDelay() {
-        return getNextDate(TIME_HALF_DAY, TIME_DAY * 5);
-    }
 }

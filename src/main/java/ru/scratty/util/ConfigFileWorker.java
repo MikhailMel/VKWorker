@@ -57,7 +57,7 @@ public class ConfigFileWorker {
     /**
      * Получение данных по ключу
      */
-    String getData(String field) {
+    synchronized String getData(String field) {
         if (!map.isEmpty() && map.containsKey(field) && !map.get(field).isEmpty()) {
             return map.get(field);
         }
@@ -67,7 +67,7 @@ public class ConfigFileWorker {
     /**
      * Сохранение пары ключ-значение в файле
      */
-    void setData(String name, String data) {
+    synchronized void setData(String name, String data) {
         map.put(name, data);
 
         try(FileWriter writer = new FileWriter(path, false)) {

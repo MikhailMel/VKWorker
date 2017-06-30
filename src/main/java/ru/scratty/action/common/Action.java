@@ -2,9 +2,9 @@ package ru.scratty.action.common;
 
 import com.vk.api.sdk.client.actors.UserActor;
 import ru.scratty.action.listener.OnActionListener;
-import ru.scratty.captcha.Captcha;
-import ru.scratty.captcha.CaptchaDialog;
-import ru.scratty.captcha.CaptchaListener;
+import ru.scratty.dialog.captcha.Captcha;
+import ru.scratty.dialog.captcha.CaptchaDialog;
+import ru.scratty.dialog.captcha.CaptchaListener;
 import ru.scratty.util.Config;
 
 import java.text.SimpleDateFormat;
@@ -48,19 +48,12 @@ public abstract class Action {
     }
 
     /**
-     * Расчет следующей пограничной даты
-     */
-    protected long getNextDate(long lowerRange, long upperRange) {
-        return new Date().getTime() + ThreadLocalRandom.current().nextLong(lowerRange, upperRange);
-    }
-
-    /**
      * Проверка наступления нужного момента для совершения действия
      */
     public void check() {
         if(config.getLong(typeAction) <= new Date().getTime() && !captchaFlag) {
             doAction();
-            setDelay(getDelay());
+            setDelay();
 //            setDelay(10000);
         }
     }
@@ -71,14 +64,10 @@ public abstract class Action {
     protected abstract void doAction();
 
     /**
-     * Задаем отсрочку для следующего действия
-     */
-    protected abstract long getDelay();
-
-    /**
      * Установка отсрочки
      */
-    private void setDelay(long date) {
+    private void setDelay() {
+        long date = new Date().getTime() + ThreadLocalRandom.current().nextLong(0, config.getThreshold(typeAction));
         config.setLong(typeAction, date);
         sendMsg("Следующее действие будет " + sdf.format(new Date(date)));
     }

@@ -49,7 +49,7 @@ public class Bot extends Thread implements OnActionListener {
         this.userId = userId;
         this.token = token;
 
-        config = new Config(name);
+        config = new Config(this);
         config.setString(Config.StringKey.NAME, name);
         config.setInt(Config.IntKey.USER_ID, userId);
         config.setString(Config.StringKey.TOKEN, token);
@@ -60,7 +60,7 @@ public class Bot extends Thread implements OnActionListener {
     public Bot(@NotNull String name) {
         this.name = name;
 
-        config = new Config(name);
+        config = new Config(this);
         userId = config.getInt(Config.IntKey.USER_ID);
         token = config.getString(Config.StringKey.TOKEN);
 

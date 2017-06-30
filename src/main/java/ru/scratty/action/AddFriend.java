@@ -9,7 +9,7 @@ import ru.scratty.action.listener.OnActionListener;
 import ru.scratty.action.util.VkFriends;
 import ru.scratty.action.util.VkGroups;
 import ru.scratty.action.util.VkUsers;
-import ru.scratty.captcha.Captcha;
+import ru.scratty.dialog.captcha.Captcha;
 import ru.scratty.util.Config;
 
 import static ru.scratty.action.common.VkApi.INT_ERR;
@@ -48,10 +48,5 @@ public class AddFriend extends Action {
             sendMsg(e.getMessage());
             e.printStackTrace();
         }
-    }
-
-    @Override
-    protected long getDelay() {
-        return getNextDate(TIME_HALF_DAY, TIME_DAY * 2);
     }
 }

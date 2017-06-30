@@ -1,4 +1,4 @@
-package ru.scratty.captcha;
+package ru.scratty.dialog.captcha;
 
 public interface CaptchaListener {
 

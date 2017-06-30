@@ -47,11 +47,6 @@ public class Like extends Action {
         }
     }
 
-    @Override
-    protected long getDelay() {
-        return getNextDate(TIME_MINUTE, TIME_HOUR * 8);
-    }
-
     /**
      * Выбор сообщения в зависимости от лайка
      */
